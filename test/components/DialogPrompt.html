@@ -1,0 +1,26 @@
+<!-- dialogPrompt -->
+<script type="text/javascript">
+    brite.ui.registerComponent("DialogPrompt", {
+        parent: "body"
+    },
+    // Note in this way, when a function is passed, it is responsible to return an instance of the Component 
+    function(){
+    	
+    	// look at the js/DialogPrompt.js to see the definition of the component
+    	
+    	return new briteTest.DialogPrompt();
+    });
+    
+    
+</script>
+<!--  /dialogPrompt -->
+<script id="tmpl-DialogPrompt" type="text/html">
+    <div class="DialogPrompt">
+        <h2>${title}</h2>
+        <p>${prompt}</p>
+        <div class="dialogPrompt-buttonbar">
+            <button class="cancel">Cancel</button>
+            <button class="ok">OK</button>
+        </div>
+    </div>
+</script>
