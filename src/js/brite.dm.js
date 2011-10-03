@@ -38,7 +38,7 @@ brite.dm = {};
 	 * @param {String} objectType the object type that this dao will represent
 	 * @param {DAO Oject} a Dao instance that implement the crud methods: get, find, create, update, remove.
 	 */
-	brite.dm.registerDao = function(objectType, dao) {
+	brite.registerDao = function(objectType, dao) {
 		daoDic[objectType] = dao;
 		return this;
 	};
@@ -49,17 +49,24 @@ brite.dm = {};
 	 * @param {String} objectType
 	 * @param {Function} listener
 	 */
-	brite.dm.addChangeListener = function(objectType, listener) {
+	//brite.dm.addChangeListener
+	brite.addDataChangeListener = function(objectType, listener) {
+		var bindingId = brite.util.uuid();
 		var listeners = daoChangeEventListeners[objectType];
 		if (!listeners) {
-			listeners = [];
+			listeners = {};
 			daoChangeEventListeners[objectType] = listeners;
 		}
-		daoChangeEventListeners[objectType] = listeners;
-		listeners.push(listener);
-
-		return this;
+		listeners[bindingId] = listener;
+		
+		return bindingId;
 	};
+	
+	brite.removeDataChangeListener = function(listenerId){
+		$.each(daoChangeEventListeners,function(idx,listeners){
+			delete listeners[listenerId];
+		})
+	}
 
 	/**
 	 * Return the id property name (this is the only method in brite.ddm that is not deferred)
@@ -232,9 +239,9 @@ brite.dm = {};
 		};
 
 		if (listeners) {
-			for (var i = 0; i < listeners.length; i++) {
-				listeners[i](daoChangeEvent);
-			}
+			$.each(listeners,function(key,listener){
+				listener(daoChangeEvent);
+			});
 		}
 	};
 

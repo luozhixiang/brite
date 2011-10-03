@@ -77,7 +77,7 @@
 					updateUserListDiv();
 					
 					// Update the userListDiv on change
-					brite.dm.addChangeListener("user",function(daoChangeEvent){
+					brite.addDataChangeListener("user",function(daoChangeEvent){
 						updateUserListDiv();
 					});
 					
@@ -139,7 +139,7 @@
 				<script type="text/javascript">		
 					var userStore = [{id:"001",name:"Mike",city:"San Francisco"}];
 					
-					brite.dm.registerDao("user",new brite.dao.SimpleDao(userStore));
+					brite.registerDao("user",new brite.dao.SimpleDao(userStore));
 				</script>
 				<!-- /User Dao -->
 				

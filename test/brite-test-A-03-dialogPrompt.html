@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>briteUITest - brite.ui</title>
+        <title>briteUITest - brite</title>
 
 		<!-- jQuery is the only required library in Snow -->
 		<script type="text/javascript" src="../js-dependencies/jquery.js" ></script>
@@ -34,7 +34,7 @@
     </head>
     <body>
     	<div class="sTestSection">
-	        <h2>brite.ui Dialog</h2>
+	        <h2>brite Dialog</h2>
 
 			<div class="sTestSrc sTestShowSrc">
 				
@@ -50,9 +50,9 @@
 				<script type="text/javascript">
                 $("#promptBut").click(function(){
                     
-                    // Note: brite.ui.display always return a jQuery Deferred that will get resolved with the component instance
+                    // Note: brite.display always return a jQuery Deferred that will get resolved with the component instance
                     
-					var dfd = brite.ui.display('DialogPrompt', {
+					var dfd = brite.display('DialogPrompt', {
                             title: 'Test Dialog',
                             prompt: 'Are you sure you want to continue?'
                     });

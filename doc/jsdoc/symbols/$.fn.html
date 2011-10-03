@@ -218,8 +218,6 @@ dl.detailList dd{
 	
 	<li><a href="../symbols/brite.ua.html">brite.ua</a></li>
 	
-	<li><a href="../symbols/brite.ui.html">brite.ui</a></li>
-	
 	<li><a href="../symbols/brite.util.html">brite.util</a></li>
 	
 	<li><a href="../symbols/brite.util.array.html">brite.util.array</a></li>
@@ -304,15 +302,6 @@ dl.detailList dd{
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">$.fn.<b><a href="../symbols/%24.fn.html#.bComponentChildren">bComponentChildren</a></b>(componentName)
-								</div>
-								<div class="description">Get the list of components that this htmlElement contains.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont">$.fn.<b><a href="../symbols/%24.fn.html#.bDrag">bDrag</a></b>(delegate, opts)
 								</div>
 								<div class="description">Drag event for mouse and touch based user agents.</div>
@@ -325,6 +314,24 @@ dl.detailList dd{
 								<div class="fixedFont">$.fn.<b><a href="../symbols/%24.fn.html#.bEmpty">bEmpty</a></b>()
 								</div>
 								<div class="description">Safely empty a HTMLElement of its children HTMLElement and bComponent by calling the preRemove and postRemove on every child components.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">$.fn.<b><a href="../symbols/%24.fn.html#.bFindComponents">bFindComponents</a></b>(componentName)
+								</div>
+								<div class="description">Get the list of components that this htmlElement contains.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">$.fn.<b><a href="../symbols/%24.fn.html#.bFindFirstComponent">bFindFirstComponent</a></b>(componentName)
+								</div>
+								<div class="description">Get the list of components that this htmlElement contains.</div>
 							</td>
 						</tr>
 					
@@ -413,7 +420,7 @@ well as this component.</div>
 					</div>
 					<div class="description">
 						Return the component that this html element belong to. Thi traverse the tree backwards (this html element up to document) to find the closest html element
-containing the brite.ui component for this name. 
+containing the brite component for this name. 
 
 If a componentName is given then it will try to find the given component. 
 
@@ -445,49 +452,6 @@ For example:
 						
 						
 						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".bComponentChildren"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">$.fn.</span><b>bComponentChildren</b>(componentName)
-					
-					</div>
-					<div class="description">
-						Get the list of components that this htmlElement contains.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{string}</span> <b>componentName</b>
-									
-								</dt>
-								<dd>(optional) if present, will filter only the component with this matching name</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>a javascript array of all the match component</dd>
-							
-							</dl>
 						
 						
 						
@@ -656,6 +620,92 @@ See code sample at /test/test_brite.event.02.bDrag.html for more infor
 
 					<hr />
 				
+					<a name=".bFindComponents"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">$.fn.</span><b>bFindComponents</b>(componentName)
+					
+					</div>
+					<div class="description">
+						Get the list of components that this htmlElement contains.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>componentName</b>
+									
+								</dt>
+								<dd>(optional) if present, will filter only the component with this matching name</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>a javascript array of all the match component</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".bFindFirstComponent"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					
+					<span class="light">$.fn.</span><b>bFindFirstComponent</b>(componentName)
+					
+					</div>
+					<div class="description">
+						Get the list of components that this htmlElement contains.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>componentName</b>
+									
+								</dt>
+								<dd>(optional) if present, will filter only the component with this matching name</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>a javascript array of all the match component</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name=".bObjRef"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
@@ -794,7 +844,7 @@ In future iterations, we might want make the "touch" case a little bit more adva
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Sep 20 2011 20:37:01 GMT-0700 (PDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Sun Oct 02 2011 18:29:46 GMT-0700 (PDT)
 		</div>
 	</body>
 </html>

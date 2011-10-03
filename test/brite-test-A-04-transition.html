@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>briteUITest - brite.ui</title>
+        <title>briteUITest - brite</title>
 
 		<!-- Generic Test Includes -->
 		<link rel="stylesheet" href="css/sTestHelper.css"/>
@@ -21,11 +21,11 @@
     </head>
     <body>
     	<div class="sTestSection">
-	        <h2>brite.ui Transition</h2>
+	        <h2>brite Transition</h2>
 
 			<div class="sTestSrc sTestShowSrc">
 				
-				<button onclick="brite.ui.display('helloWorld',{name:'Mike'})">Display Hello World</button>
+				<button onclick="brite.display('helloWorld',{name:'Mike'})">Display Hello World</button>
 				
 				
 				<div id="HelloWorld-Container" style="margin: 30px;border: solid 1px #dddddd;height: 30px;overflow:hidden;position:relative;">
@@ -35,7 +35,7 @@
 				<!-- Transition -->
 				<!-- This is a reusable transition for any components that use the transition "wipe" -->
 				<script type="text/javascript">
-					brite.ui.registerTransition("wipe",function(component,data,config){
+					brite.registerTransition("wipe",function(component,data,config){
 						//This is new 
 						var $new = component.$element;
 						
@@ -73,13 +73,13 @@
 				<script type="text/javascript">
 					var helloWorlCount = 0;
 					
-					brite.ui.registerComponent("helloWorld",
+					brite.registerComponent("helloWorld",
 						
 						//This is the default 
 						{
 							  // Tell where to add the output of build element
 							  parent: "#HelloWorld-Container",
-							  // Tell the brite.ui to call the "wipe" transition
+							  // Tell the brite to call the "wipe" transition
 							  transition: "wipe"
 						},
 						// Build the component $element
@@ -90,7 +90,7 @@
 								// just to keep track of the number of display
 								$e.append(" " + ++helloWorlCount);
 								
-								// Return the jQuery or HTML element to have brite.ui managing the display logic
+								// Return the jQuery or HTML element to have brite managing the display logic
 								return $e;
 								
 								// Not recommended, but if return null, then, this component.build function is responsible of the display logic 
