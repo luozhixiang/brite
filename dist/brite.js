@@ -773,7 +773,43 @@ brite.util = {};
 	for (var i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
     return uuid.join('');
   };
-	
+
+  
+  /**
+   * Return the value from this rootObj with the "." delimited path name.
+   *  
+   * Return undefined if any of the node going down is undefined.
+   * 
+   * @param {Object} rootObj this is the root obj to start from
+   * @param {String} pathToValue this is the "." delimited path to the value
+   * 
+   * @example brite.util.value({contact:{firstName:"Mike"}},"contact.firstName"); // return Mike
+   * 
+   */
+  brite.util.value = function(rootObj,pathToValue){
+	  if (!rootObj){
+		  return rootObj;
+	  }
+	  // for now, return the rootObj if the pathToValue is empty or null or undefined
+	  if (!pathToValue){
+		  return rootObj;
+	  }
+	  var result;
+	  var i, l, names = pathToValue.split(".");
+	  var iName, iVal = rootObj;
+	  for (i = 0, l = names.length; i < l; i++){
+		  iName = names[i];
+		  if (iVal == null){
+			  return undefined;
+		  }
+		  iVal = iVal[iName];
+		  if (typeof iVal === "undefined"){
+			  return iVal;
+		  }
+	  }
+	  return iVal;
+  }
+  
 
 /**
  * @namespace

@@ -783,6 +783,8 @@ brite.util = {};
    * @param {Object} rootObj this is the root obj to start from
    * @param {String} pathToValue this is the "." delimited path to the value
    * 
+   * @example brite.util.value({contact:{firstName:"Mike"}},"contact.firstName"); // return Mike
+   * 
    */
   brite.util.value = function(rootObj,pathToValue){
 	  if (!rootObj){
