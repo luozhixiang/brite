@@ -1235,6 +1235,7 @@ brite.ua = {};
 	 *            refHeight
 	 * @returns {brite.gtx}
 	 */
+	// DEPRECATED
 	brite.gtx.prototype.referenceScale = function(refWidth, refHeight) {
 		this._refWidth = refWidth;
 		this._refHeight = refHeight;
@@ -1261,8 +1262,6 @@ brite.ua = {};
 			canvas.height = $parent.height();
 		}
 
-		// compute the ratio
-		computeRatio.call(this);
 
 		return this;
 	}
