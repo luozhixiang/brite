@@ -1755,7 +1755,7 @@ brite.dm = {};
 	 * @param {Object} saveData The data object that was used to do the create/update. Could be partial object.
 	 */
 	function callChangeListeners(objectType, action, newData, saveData) {
-		var listeners = daoChangeEventListeners[objectType], listener;
+		var listeners = daoChangeEventListeners[objectType];
 
 		var daoChangeEvent = {
 			objectType: objectType,
