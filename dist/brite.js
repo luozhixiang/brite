@@ -1670,15 +1670,15 @@ brite.dm = {};
 
 		callDaoListeners(result,"create",objectType,null,data);
 		
-		// if the result is a deferred object, then, wait until done to callChangeListeners
+		// if the result is a deferred object, then, wait until done to callDataChangeListeners
 		if (result && $.isFunction(result.promise)) {
 			result.done( function(newData) {
-				callChangeListeners(objectType, "create", null, newData, data);
+				// TODO: need to get the id to set the id rather than null
+				callDataChangeListeners("create",objectType, null, newData, data);
 			});
 
 		} else {
-			callChangeListeners(objectType, "create", null, result, data);
-
+			callDataChangeListeners("create",objectType, null, result, data); 
 		}
 		return result;
 
@@ -1696,11 +1696,11 @@ brite.dm = {};
 		// if the result is a deferred object, then, wait until done to callChangeListeners
 		if (result && $.isFunction(result.promise)) {
 			result.done( function(newData) {
-				callChangeListeners(objectType, "update", null, newData, data);
+				callDataChangeListeners("update",objectType, id, newData, data); 
 			});
 
 		} else {
-			callChangeListeners(objectType, "update", null, result, data);
+			callDataChangeListeners("update",objectType, id, result, data); 
 
 		}
 		return result;
@@ -1719,11 +1719,11 @@ brite.dm = {};
 		// if the result is a deferred object, then, wait until done to callChangeListeners
 		if (result && $.isFunction(result.promise)) {
 			result.done( function(removedObject) {
-				callChangeListeners(objectType, "remove", removedObject, null, null);
+				callDataChangeListeners("remove",objectType, id, null, null); 
 			});
 
 		} else {
-			callChangeListeners(objectType, "remove", result, null, null);
+			callDataChangeListeners("remove",objectType, id, null, null);
 		}
 
 	};
@@ -1749,17 +1749,19 @@ brite.dm = {};
 	 * Private method to trigger the change(daoEvent) on all listeners.
 	 * NOTE: this param names maps to what is daoChangeEvent
 	 *
-	 * @param {Object} objectType
 	 * @param {Object} action ("remove" "create" "update")
+	 * @param {Object} objectType
+	 * @param {Object} id
 	 * @param {Object} newData The data after the change (null if remove)
 	 * @param {Object} saveData The data object that was used to do the create/update. Could be partial object.
 	 */
-	function callChangeListeners(objectType, action, newData, saveData) {
+	function callDataChangeListeners(action,objectType, id, newData, saveData) {
 		var listeners = daoChangeEventListeners[objectType];
 
 		var daoChangeEvent = {
-			objectType: objectType,
 			action: action,
+			objectType: objectType,
+			id: id,
 			newData: newData,
 			saveData: saveData
 		};
@@ -1893,8 +1895,7 @@ brite.dao = {};
 			throw er;
 		}
 
-		return oldData;
-
+		return id;
 	}
 
 	// ------ /DAO Interface Implementation ------ //
