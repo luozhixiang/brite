@@ -69,7 +69,7 @@
 				
 				<!-- Simple User CRUD UI Logic -->
 				<script type="text/javascript">
-				brite.log.config.debugMode = true;
+				
 				$(function(){
 					var $userList = $("#userList");
 					
@@ -87,7 +87,7 @@
 						var objRef = $(this).bObjRef("user");
 						if (objRef){
 							brite.dm.remove("user",objRef.id).done(function(){
-								brite.log.info("user remove");
+								// here the remove
 							});
 						}
 					});
@@ -139,7 +139,15 @@
 				<script type="text/javascript">		
 					var userStore = [{id:"001",name:"Mike",city:"San Francisco"}];
 					
+					// register the brite simple DAO
 					brite.registerDao("user",new brite.dao.SimpleDao(userStore));
+					
+					
+					// register a dao listener
+					
+					brite.addDaoListener(function(daoEvent){
+						console.log("dao listener: " + daoEvent.action + " " + daoEvent.objectType + " result: " + daoEvent.result);
+					});
 				</script>
 				<!-- /User Dao -->
 				

@@ -19,8 +19,11 @@ brite.dm = {};
 
 	var daoDic = {};
 
-	//changeEventListenersby objectType
+	//data change listeners
 	var daoChangeEventListeners = {};
+	
+	//daoListeners
+	var daoListeners = {};
 
 	function getDao(objectType) {
 		var dao = daoDic[objectType];
@@ -34,7 +37,9 @@ brite.dm = {};
 	};
 
 	/**
-	 * Register a DAO for a given object type.
+	 * Register a DAO for a given object type. A DAO must implements the "CRUD" method, get, list, create, update, remove and must return (directly 
+	 * or via deferred) the appropriate result value. 
+	 * 
 	 * @param {String} objectType the object type that this dao will represent
 	 * @param {DAO Oject} a Dao instance that implement the crud methods: get, find, create, update, remove.
 	 */
@@ -43,13 +48,47 @@ brite.dm = {};
 		return this;
 	};
 
+	
+	/**
+	 * 
+	 * Add a dao Listener.
+	 * 
+	 * @param {function} daoListener  function that will get called with the following argument
+	 *     							  daoListener(DaoEvent). Deferred is the deferred returned by the brite.dm.***, and DaoEvent is the event object
+	 *     
+	 * DaoEvent will have the following format:
+	 *    DaoEvent.action: the action of the dao method (create, update, get, list, remove)
+	 *    DaoEvent.objectType: the object type for this call
+	 *    DaoEvent.result: the raw result returned by the dao (could be the result or the deferred that will get resolve to the result) 
+	 *    DaoEvent.data: the data originally send to do the action (if appropriate) 
+	 *    DaoEvent.id: the eventual id (if appropriate)
+	 *    DaoEvent.opts: the eventual opts (when list) 
+	 * 
+	 * @returns listenerId that can be used to remove the listener with brite.removeDaoListener(listenerId)
+	 */
+	brite.addDaoListener = function(daoListener){
+		var listenerId = brite.util.uuid();
+		daoListeners[listenerId] = daoListener;
+		
+		return listenerId;
+	}
+	
+	brite.removeDaoListener = function(listenerId){
+		delete daoListeners[listenerId];
+	}
+	
+	
 	/**
 	 * Add a change listener function for an objectType. <br />
-	 * Change listener get triggered on create, update, and remove.
+	 * Data Change listener get triggered on create, update, and remove.
+	 * 
 	 * @param {String} objectType
-	 * @param {Function} listener
+	 * @param {Function} listener function. will be called with the dataChangeEvent argument
+	 * dataChangeEvent.objectType {string}
+	 * dataChangeEvent.action {string} could be "create" "update" "remove"
+	 * dataChangeEvent.newData {object} The data after the change (null if remove) (if applicable)
+	 * dataChangeEvent.saveData {object} The data object that was used to do the create/update. Could be partial object.  (if applicable) (TODO: need to clarify)
 	 */
-	//brite.dm.addChangeListener
 	brite.addDataChangeListener = function(objectType, listener) {
 		var bindingId = brite.util.uuid();
 		var listeners = daoChangeEventListeners[objectType];
@@ -134,7 +173,11 @@ brite.dm = {};
 	 * @return
 	 */
 	brite.sdm.get = function(objectType, id) {
-		return getDao(objectType).get(objectType, id);
+		var result = getDao(objectType).get(objectType, id);
+		
+		callDaoListeners(result,"get",objectType,id);
+		
+		return result;
 	};
 
 	/**
@@ -148,7 +191,11 @@ brite.dm = {};
 	 *           opts.orderType {String} "asc" or "desc"
 	 */
 	brite.sdm.list = function(objectType, opts) {
-		return getDao(objectType).list(objectType, opts);
+		var result =  getDao(objectType).list(objectType, opts);
+		
+		callDaoListeners(result,"list",objectType,null,null,opts);
+		
+		return result;
 	};
 
 	/**
@@ -162,6 +209,8 @@ brite.dm = {};
 	brite.sdm.create = function(objectType, data) {
 		var result = getDao(objectType).create(objectType, data);
 
+		callDaoListeners(result,"create",objectType,null,data);
+		
 		// if the result is a deferred object, then, wait until done to callChangeListeners
 		if (result && $.isFunction(result.promise)) {
 			result.done( function(newData) {
@@ -183,6 +232,8 @@ brite.dm = {};
 	brite.sdm.update = function(objectType, id, data) {
 		var result = getDao(objectType).update(objectType,id, data);
 
+		callDaoListeners(result,"update",objectType,id,data);
+		
 		// if the result is a deferred object, then, wait until done to callChangeListeners
 		if (result && $.isFunction(result.promise)) {
 			result.done( function(newData) {
@@ -204,6 +255,8 @@ brite.dm = {};
 	brite.sdm.remove = function(objectType, id) {
 		var result = getDao(objectType).remove(objectType, id);
 
+		callDaoListeners(result,"remove",objectType,id);
+		
 		// if the result is a deferred object, then, wait until done to callChangeListeners
 		if (result && $.isFunction(result.promise)) {
 			result.done( function(removedObject) {
@@ -218,6 +271,20 @@ brite.dm = {};
 
 	// ------- /brite.sdm DAO API ------ //
 
+	function callDaoListeners(result,action,objectType,id, data, opts){
+		var daoEvent = {
+				result: result,
+				action: action,
+				objectType: objectType,
+				id: id,
+				data: data, 
+				opts: opts
+		}
+		
+		$.each(daoListeners,function(listenerId,listener){
+			listener(daoEvent);
+		});
+	}
 
 	/**
 	 * Private method to trigger the change(daoEvent) on all listeners.
