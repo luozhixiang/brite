@@ -316,12 +316,14 @@ var brite = brite || {};
 
 						if (parentComponent$Element.length > 0) {
 							parentComponentProcessPromise = parentComponent$Element.data("componentProcessPromise");
-							parentComponentProcessPromise.whenPostDisplay.done(function() {
-								invokePostDisplayDfd = invokePostDisplay(component, data, config);
-								invokePostDisplayDfd.done(function() {
-									postDisplayDeferred.resolve(component);
+							if (parentComponentProcessPromise){
+								parentComponentProcessPromise.whenPostDisplay.done(function() {
+									invokePostDisplayDfd = invokePostDisplay(component, data, config);
+									invokePostDisplayDfd.done(function() {
+										postDisplayDeferred.resolve(component);
+									});
 								});
-							});
+							}
 						}
 					}
 
